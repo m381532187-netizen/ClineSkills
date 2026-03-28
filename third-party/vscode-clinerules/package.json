@@ -1,0 +1,130 @@
+{
+  "name": "clinerules",
+  "displayName": "Cline Rules",
+  "description": "Cline/Roo rules plugin. Automatically create .clinerules file for cline / roo etc.",
+  "version": "0.0.6",
+  "icon": "images/icon.png",
+  "author": {
+    "name": "henryalps",
+    "url": "https://henryalps.github.io"
+  },
+  "license": "MIT",
+  "keywords": [
+    "cline",
+    "ai",
+    "rules",
+    "productivity"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/henryalps/vscode-clinerules.git"
+  },
+  "publisher": "ai-henryalps",
+  "engines": {
+    "vscode": "^1.93.0"
+  },
+  "categories": [
+    "Other",
+    "Programming Languages",
+    "Snippets"
+  ],
+  "activationEvents": [
+    "onCommand:clinerules.addRuleFromBank",
+    "onCommand:clinerules.createRule",
+    "onCommand:clinerules.editRule",
+    "onCommand:clinerules.deleteRule",
+    "onCommand:clinerules.manageRuleBank"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "clinerules.addRuleFromBank",
+        "title": "Cline Rules: Add Project Rule from Bank"
+      },
+      {
+        "command": "clinerules.createRule",
+        "title": "Cline Rules: New Project Rule"
+      },
+      {
+        "command": "clinerules.editRule",
+        "title": "Cline Rules: Edit Rule"
+      },
+      {
+        "command": "clinerules.deleteRule",
+        "title": "Cline Rules: Delete Rule"
+      },
+      {
+        "command": "clinerules.manageRuleBank",
+        "title": "Cline Rules: Manage Rule Bank"
+      },
+      {
+        "command": "clinerules.openRuleBankDirectory",
+        "title": "Cline Rules: Open Rule Bank Directory (Internal)"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "clinerules.addRuleFromBank",
+          "group": "2_workspace",
+          "when": "explorerResourceIsFolder"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "clinerules.manageRuleBank",
+          "when": "true"
+        },
+        {
+          "command": "clinerules.openRuleBankDirectory",
+          "when": "false"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Cline/Roo Rules",
+      "properties": {
+        "clinerules.ruleBankPath": {
+          "type": "string",
+          "default": "",
+          "description": "Specifies the path to the Cline/Roo rule bank directory. If not set, defaults to ~/.cline-rules."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "postinstall": "node ./scripts/copyRules.js",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.93.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@typescript-eslint/eslint-plugin": "^8.17.0",
+    "@typescript-eslint/parser": "^8.17.0",
+    "eslint": "^9.16.0",
+    "typescript": "^5.7.2",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1"
+  },
+  "galleryBanner": {
+    "color": "#C80000",
+    "theme": "dark"
+  },
+  "homepage": "https://github.com/henryalps/vscode-clinerules/blob/main/README.md",
+  "bugs": {
+    "url": "https://github.com/henryalps/vscode-clinerules/issues"
+  },
+  "files": [
+    "out/**/*",
+    "rules/**/*",
+    "images/**/*",
+    "LICENSE.md"
+  ]
+}
