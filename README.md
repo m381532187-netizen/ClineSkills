@@ -56,14 +56,46 @@ ClineSkills/
 │   ├── setup-ci-cd-pipeline.md
 │   └── ...
 │
+├── skills/                         # ⭐ 自定义 Skills
+│   └── inline-expand/              #   C++ 函数内联展开工具
+│
 └── third-party/                   # 社区精选
     ├── rules-template/             #   Agile开发+Memory Bank（⭐1063）
     ├── vscode-clinerules/          #   VSCode插件+19类预设（⭐40）
     ├── cline-prompts-tips-tricks/  #   提示词合集（⭐33）
-    ├── oci-ai-architect-skills/    #   企业级跨平台技能库
+    ├── oci-ai-architect-skills/   #   企业级跨平台技能库
     ├── thinking-partner/            #   150+思维模型（⭐113）
     └── nexus-skills/              #   代码库知识图谱（⭐139）
 ```
+
+---
+
+## 🏆 Skills（自定义工具）
+
+### skills / inline-expand
+
+**C++ 函数内联展开工具**，专为加密文件环境设计（企业加密如亿赛通，Python 无法直接 `open()`）。
+
+```
+skills/inline-expand/
+├── SKILL.md                    # 技能定义与触发规则
+├── commands/inline-expand.md   # Slash 命令规范
+├── design.md                   # 设计文档
+└── scripts/
+    ├── step1_extract_bodies.py  # 从源文件提取函数体
+    ├── step2_find_calls.py     # 定位所有调用点
+    └── step3_inline_expand.py   # 执行内联替换
+```
+
+**触发词**：
+- "内联展开"、"inline expand"
+- "将 ProcessTaskForGB 的函数内联回 ProcessTask"
+- "验证手动提取接口是否正确"
+
+**环境约束**：
+- 加密文件通过 `type filename.cpp | python script.py` 管道绕过
+- `ctags.exe` 白名单应用可直接读取加密文件
+- 禁止用 `read_file` 直接读取大体积 `.cpp` 文件
 
 ---
 
@@ -100,23 +132,6 @@ ClineSkills/
 
 **强烈推荐**——Agile 开发方法论 + Memory Bank 持久化记忆系统。
 
-```
-rules-template/
-├── .clinerules/           # Cline 规则（符号链接指向 .cursor/rules/）
-│   ├── rules.mdc          #   核心规则
-│   ├── plan.mdc           #   计划工作流
-│   ├── implement.mdc      #   实施工作流
-│   └── debug.mdc          #   调试工作流
-├── docs/                  # 项目文档
-│   ├── architecture.md    #   系统架构文档
-│   ├── technical.md       #   技术规格说明
-│   └── product_requirement_docs.md  # PRD
-├── tasks/                 # 任务管理
-│   ├── tasks_plan.md      #   任务待办列表
-│   └── active_context.md  #   当前开发上下文
-└── memory.mdc             # 记忆文件规范
-```
-
 **特点**：
 - 跨平台兼容（Cline + Cursor + RooCode + Windsurf）
 - 三档规则（Basic / Standard / Strict）按需选用
@@ -127,56 +142,22 @@ rules-template/
 
 150+ 思维模型，让 AI 不仅执行，还能**挑战你的假设**。
 
-```
-thinking-partner/
-└── skills/thinking-partner/
-    ├── SKILL.md           # 技能定义
-    └── references/
-        ├── model-catalog.md     # 150+思维模型目录
-        └── thinking-diagnostics.md  # 思维诊断
-```
-
 **使用场景**：
 - "帮我分析这个方案的风险"
 - "我遗漏了什么？"
 - "用第一性原理重新审视这个问题"
-- SWOT / 5 Whys / Pre-mortem / Inversion 等
 
 ### third-party / nexus-skills（⭐139）
 
 代码库感知技能，为 AI 生成**持久化知识图谱**。
 
-```
-nexus-skills/
-└── skills/
-    ├── nexus-mapper/      # 生成代码库结构图
-    └── nexus-query/       # 查询依赖关系和改动影响半径
-```
-
 **使用场景**：
 - 快速理解新项目结构
 - 查询某个改动会影响哪些文件
-- 生成代码库的依赖图
 
 ### third-party / vscode-clinerules（⭐40）
 
-VSCode 插件形式的规则预设库，图形化安装。
-
-```
-vscode-clinerules/rules/
-├── web-react/           # React 开发规则
-├── web-vue/             # Vue.js 开发规则
-├── web-nextjs/          # Next.js 开发规则
-├── backend-django/       # Django 后端规则
-├── backend-express/      # Express.js 后端规则
-├── backend-springboot/   # Spring Boot 后端规则
-├── backend-rails/        # Rails 后端规则
-├── app-ios/             # iOS 开发规则
-├── app-android/         # Android 开发规则
-├── local-python/        # Python 开发规则
-├── general/             # 通用规则
-└── ...（共19个分类）
-```
+VSCode 插件形式的规则预设库，图形化安装。涵盖 React / Vue / Django / Express / Spring Boot / iOS / Android 等共 19 个分类。
 
 ---
 
@@ -193,6 +174,7 @@ vscode-clinerules/rules/
 | 复杂多步骤任务 | `rules-template/`（Agile 工作流）|
 | 流程图/架构图 | `.clinerules/mermaid-plans.md` |
 | 新项目接手 | `.clinerules/codebase-onboarding.md` |
+| C++ 函数内联展开 | `skills/inline-expand/` |
 
 ### 让 Cline 加载特定规则
 
@@ -212,7 +194,7 @@ vscode-clinerules/rules/
 | Cline 官方仓库 | [github.com/cline/cline](https://github.com/cline/cline) | ⭐59k，VSCode AI Agent 主体 |
 | Cline 官方规则 | [github.com/cline/prompts](https://github.com/cline/prompts) | ⭐1.1k，官方规则和工作流 |
 | Awesome Cursor Rules | [github.com/PatrickJS/awesome-cursorrules](https://github.com/PatrickJS/awesome-cursorrules) | ⭐38k，大部分规则兼容 Cline |
-| ClawHub (OpenClaw Skills) | [clawhub.com](https://clawhub.com) | OpenClaw 的 Skills 市场 |
+| ClawSkills (OpenClaw) | [github.com/m381532187-netizen/ClawSkills](https://github.com/m381532187-netizen/ClawSkills) | Kevin 的 OpenClaw Skills 仓库 |
 
 ---
 
