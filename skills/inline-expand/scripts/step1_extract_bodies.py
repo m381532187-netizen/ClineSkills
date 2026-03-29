@@ -213,6 +213,37 @@ def main():
 
     lines = source.splitlines()  # normalizes \r\n and \n
 
+    # --- Encryption bypass validation ---
+    # If the type-pipe bypass fails silently (e.g., DLP policy tightened),
+    # stdin will contain garbage or nothing. Detect this early and fail loudly.
+    if len(raw_bytes) < 500:
+        print(
+            f"ERROR: stdin received only {len(raw_bytes)} bytes. "
+            "The type-pipe bypass may have failed (encrypted content or empty pipe).",
+            file=sys.stderr
+        )
+        sys.exit(2)
+
+    # Cross-validate: ctags says FuncX starts at line N — verify that line
+    # actually contains the expected function name in the decrypted content.
+    for bare_name, meta in func_meta.items():
+        start = meta['start_line']
+        full_name = meta['full_name']
+        if start > 0 and start <= len(lines):
+            anchor_line = lines[start - 1]
+            expected = bare_name if '::' not in full_name else full_name.split('::')[-1]
+            if expected not in anchor_line:
+                print(
+                    f"ERROR: Encryption bypass validation failed.\n"
+                    f"  ctags says '{full_name}' starts at line {start}, "
+                    f"but that line does not contain '{expected}'.\n"
+                    f"  Got: {repr(anchor_line[:120])}\n"
+                    f"  Possible cause: DLP is blocking the type-pipe or file encoding mismatch.",
+                    file=sys.stderr
+                )
+                sys.exit(2)
+        break  # validating the first function is sufficient as a canary check
+
     # --- Collect body lines using ctags line ranges ---
     # ctags line numbers are 1-based; end==0 means ctags didn't provide it
     for bare_name, meta in func_meta.items():
